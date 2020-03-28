@@ -1,6 +1,7 @@
 const express = require('express')
-const Orders = require('../models/Orders')
+// const Orders = require('../models/Orders')
 const { isAuthenticated, hasRoles } = require('../auth')
+const  convert = require('xml-js');
 
 const router = express.Router()
 
@@ -18,10 +19,17 @@ router.get('/:id', (req, res) => {
 
 // router.post('/', isAuthenticated, (req, res) => {
 router.post('/',  (req, res) => {
-    console.log('POST method:[' + req.body + ']')
-    res.status(201).send(req.body)
-    // const { _id } = req.user
-    // Orders.create({ ...req.body, user_id: _id }).then(x => res.status(201).send(x))
+    // console.log('POST method:[' + req.body + ']')
+
+    const searchParams = new URLSearchParams(req.body.toString())
+    // for (let p of searchParams) {
+    //     console.log(p);
+    // }
+    const xml = searchParams.get('partslistxmldetails')
+    var options = { compact: true, ignoreComment: true , ignoreDoctype: true };
+    var partslistxmldetails = convert.xml2js(xml, options);
+
+    res.status(201).send(partslistxmldetails)
 })
 
 router.put('/:id', isAuthenticated, hasRoles(['user','admin']), (req, res) => {
