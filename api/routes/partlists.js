@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
 // router.post('/', isAuthenticated, (req, res) => {
 router.post('/',  (req, res) => {
     console.log('POST method:[' + req.body + ']')
-    res.status(201).send('returnurl echo:[' + req.body + ']')
+    res.status(201).send(req.body)
     // const { _id } = req.user
     // Orders.create({ ...req.body, user_id: _id }).then(x => res.status(201).send(x))
 })
